@@ -8,12 +8,12 @@ interface Props {
 }
 
 const fallbackCompanies: CompanyShortcut[] = [
-  { name: 'XX科技', type: 'low_risk', description: '低风险样例' },
-  { name: 'YY网络', type: 'scale_inflated', description: '规模真实性风险' },
-  { name: 'ZZ智能', type: 'legal_risk', description: '劳动争议较多' },
-  { name: 'AA教育', type: 'insufficient', description: '数据不足兜底' },
-  { name: 'CC传媒', type: 'high_combo', description: '高风险组合' },
-  { name: 'DD咨询', type: 'position_risk', description: '岗位风险突出' },
+  { name: '百度', type: 'low_risk', description: '低风险·成熟大盘' },
+  { name: '字节跳动', type: 'organization_instability', description: '节奏快·业务收缩关注' },
+  { name: '腾讯', type: 'low_risk', description: '低风险·BG 差异注意' },
+  { name: '拼多多', type: 'high_combo', description: '高风险·高强度组合' },
+  { name: '阿里', type: 'organization_instability', description: '分拆期·考核激进' },
+  { name: '美团', type: 'organization_instability', description: '组织大幅盘整·关注影响面' },
 ];
 
 export default function HomePage({ onQuery, error }: Props) {
@@ -47,7 +47,7 @@ export default function HomePage({ onQuery, error }: Props) {
           <textarea
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="输入公司名，如：XX科技；也可以粘贴岗位链接或上传岗位截图"
+            placeholder="输入公司名，如：百度；也可以粘贴岗位链接或上传岗位截图"
             rows={3}
           />
           <div className="search-actions">

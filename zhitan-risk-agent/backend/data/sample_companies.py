@@ -54,69 +54,117 @@ FALLBACK_CHECKLIST = [
 DISCLAIMER = "本产品基于公开信息与匿名反馈生成投递前风险提示，仅供求职辅助参考，不构成对任何企业的事实认定或价值判断。请用户结合官方信息、面试沟通及个人判断综合决策。"
 
 SAMPLE_COMPANIES: dict[str, dict[str, Any]] = {
-    "XX科技": {
-        "aliases": ["XX科技有限公司", "XX Tech"],
-        "creditCode": "91110000XX20260001",
-        "caseType": "low_risk",
-        "positionInfo": {"title": "前端开发工程师", "salary": "18-25K", "stage": "A轮", "scale": "100-499人"},
-        "dimensions": [
-            dimension("scale", "招聘页规模与公开参保人数大体匹配。", "high", [
-                signal("scale_match", "规模信息基本匹配", "招聘页显示 100-499 人，公开参保人数 186 人，未发现明显差异。", "企业公开信息（样例数据）", "high", 0, "招聘规模 100-499；参保人数 186", "参保人数与招聘页区间匹配度较高。", "可继续了解团队结构和岗位 HC。")
-            ]),
-            dimension("capital", "成立时间和实缴信息较稳定。", "high", [
-                signal("stable_foundation", "经营基础较稳定", "公司成立 6 年，注册资本与实缴信息较完整。", "国家企业信用信息公示系统（样例数据）", "high", 0, "成立 6 年；注册资本 1000 万；实缴 800 万", "成立时间和资本信息未呈现明显异常。", "面试中可进一步了解业务增长和团队规划。")
-            ]),
-            dimension("legal", "未检索到明显劳动争议或处罚信号。", "high", []),
-            dimension("online", "官网与公开搜索结果较完整。", "medium", [
-                signal("normal_presence", "网络存在正常", "官网、产品介绍和招聘信息较完整，公开反馈以中性为主。", "网页检索（样例摘要）", "medium", 0, "官网完整；搜索结果丰富", "公开信息可见度较好。", "可核验岗位所在业务是否仍在投入。", "search")
-            ]),
-            dimension("position", "岗位描述较清晰。", "medium", []),
-        ],
-    },
-    "YY网络": {
-        "aliases": ["YY网络科技", "YY Network"],
-        "creditCode": "91110000YY20260002",
-        "caseType": "scale_inflated",
-        "positionInfo": {"title": "新媒体运营", "salary": "12-18K", "stage": "未融资", "scale": "100-499人"},
-        "dimensions": [
-            dimension("scale", "招聘规模与参保人数存在明显差异。", "high", [
-                signal("scale_gap", "规模真实性存疑", "招聘页显示 100-499 人，公开参保人数为 12 人，存在明显差异。", "企业公开信息（样例数据）", "high", 3, "招聘规模 100-499；参保人数 12", "团队实际规模可能小于招聘页展示。", "建议确认当前团队人数、岗位 HC 是新增还是替补。")
-            ]),
-            dimension("capital", "资本和成立时间未见明显异常。", "high", []),
-            dimension("legal", "未检索到明显法律合规风险。", "high", []),
-            dimension("online", "公开评价信息较少。", "medium", [
-                signal("limited_feedback", "公开反馈有限", "公开网络反馈数量较少，难以充分判断员工体验。", "网页检索（样例摘要）", "medium", 1, "搜索结果较少", "信息透明度有限时需要通过面试补充核验。", "建议询问团队稳定性和业务现状。", "search")
-            ]),
-            dimension("position", "岗位描述基本完整。", "medium", []),
-        ],
-    },
-    "ZZ智能": {
-        "aliases": ["ZZ人工智能", "ZZ AI"],
-        "creditCode": "91110000ZZ20260003",
-        "caseType": "legal_risk",
-        "positionInfo": {"title": "算法工程师", "salary": "25-40K", "stage": "B轮", "scale": "100-499人"},
-        "dimensions": [
-            dimension("scale", "规模信息基本可验证。", "high", []),
-            dimension("capital", "融资和经营基础公开信息较完整。", "medium", []),
-            dimension("legal", "存在较多劳动争议相关记录。", "high", [
-                signal("labor_disputes", "劳动争议较多", "近年存在 4 条劳动争议相关记录，建议关注劳动制度与管理规范。", "企业公开信息（样例数据）", "high", 3, "劳动争议 4 条", "劳动争议数量较多，可能反映管理或用工规范需进一步确认。", "建议面试中确认绩效、加班、离职交接和劳动合同条款。"),
-                signal("administrative_penalty", "行政处罚记录", "存在 1 条行政处罚记录，需结合处罚性质判断影响。", "企业公开信息（样例数据）", "high", 2, "行政处罚 1 条", "处罚记录不一定直接影响员工体验，但属于需核验信号。", "建议了解公司合规管理和业务资质情况。")
-            ]),
-            dimension("online", "面试反馈中出现流程拖沓信号。", "medium", [
-                signal("negative_interview", "面试反馈偏负面", "公开反馈中重复出现“流程拖沓”“反馈较慢”等标签。", "网页检索（样例摘要）", "medium", 2, "流程拖沓；反馈较慢", "多条相似反馈具有一定参考价值。", "建议确认面试流程、反馈周期和岗位紧急程度。", "search")
-            ]),
-            dimension("position", "岗位要求较明确。", "medium", []),
-        ],
-    },
-    "AA教育": {
-        "aliases": ["AA教育咨询"],
+    "百度": {
+        "aliases": ["百度在线网络技术（北京）有限公司", "Baidu", "baidu"],
         "creditCode": None,
-        "caseType": "insufficient",
-        "positionInfo": {"title": "课程顾问", "salary": "8-15K", "stage": "未知", "scale": "少于50人"},
+        "caseType": "low_risk",
+        "positionInfo": {"title": "高级研发工程师", "salary": "30-50K", "stage": "已上市(NASDAQ)", "scale": "10000人以上"},
         "dimensions": [
-            dimension("online", "公开信息较少。", "low", [
-                signal("insufficient_public_info", "公开信息不足", "仅检索到少量基础信息，无法形成稳定判断。", "网页检索（样例摘要）", "low", 0, "搜索结果稀少", "数据覆盖不足时不宜输出明确风险结论。", "建议按自检清单在沟通中逐项核验。", "search")
-            ])
+            dimension("scale", "招聘页规模庞大且参保人数充分可验证。", "high", []),
+            dimension("capital", "2005 年纳斯达克上市多年，经营基础稳定。", "high", []),
+            dimension("legal", "未检索到明显劳动争议或处罚信号。", "high", []),
+            dimension("online", "公开反馈以中性为主，部分提到流程偏传统。", "medium", [
+                signal("traditional_management", "流程与晋升偏传统",
+                       "公开搜索结果丰富，匿名反馈中重复出现『流程相对传统』『晋升周期较长』『边缘业务线定期调整』等标签。",
+                       "网页检索(样例摘要)", "medium", 1,
+                       "晋升慢；边缘业务调整；管理较层级化",
+                       "大型成熟企业常见特征，整体风险可控但需结合具体业务线判断。",
+                       "建议确认岗位所在 BU 是否为核心利润线及近一年组织调整情况。", "search")
+            ]),
+            dimension("position", "岗位职责描述清晰。", "medium", []),
+        ],
+    },
+    "字节跳动": {
+        "aliases": ["ByteDance", "字节"],
+        "creditCode": None,
+        "caseType": "organization_instability",
+        "positionInfo": {"title": "推荐算法工程师", "salary": "35-60K", "stage": "未上市(E轮+)", "scale": "10000人以上"},
+        "dimensions": [
+            dimension("scale", "未上市但融资估值公开披露充分。", "high", []),
+            dimension("capital", "连续盈利传闻稳定，现金流充足。", "high", []),
+            dimension("legal", "随规模化出现零星劳动争议记录，整体可控。", "medium", [
+                signal("labor_disputes_minor", "少量劳动争议记录",
+                       "近年存在若干劳动仲裁相关公开记录，符合大体量互联网企业的常规水平。",
+                       "企业公开信息(样例数据)", "medium", 1,
+                       "争议数量低于行业均值区间",
+                       "零星记录不必然反映系统性问题，可作为辅助观察项。",
+                       "建议面试中确认劳动合同条款、试用期比例和绩效申诉机制。")
+            ]),
+            dimension("online", "节奏强度信号显著且伴随结构调整讨论。", "medium", [
+                signal("intense_pace", "高强度节奏标签密集",
+                       "公开反馈中高频出现『OKR 变动频繁』『上下班弹性但不规律』『目标迭代极快』等描述。",
+                       "网页检索(样例摘要)", "high", 2,
+                       "OKR 频繁调整；目标迭代快；作息弹性大",
+                       "强目标导向是公司增长引擎的一部分，但也意味着个人需适应高变化环境。",
+                       "建议确认所在团队 OKR 周期、汇报频率以及加班补偿政策。", "search"),
+                signal("business_contraction", "多条业务收缩讨论",
+                       "出现『教育业务关停』『商业化团队优化』『海外产品合并』等多轮结构调整话题。",
+                       "网页检索(样例摘要)", "medium", 2,
+                       "教育关停；商业化优化；多业务盘点",
+                       "结构性调整会直接影响新入职员工的稳定性预期。",
+                       "建议确认拟入岗位所属业务是否在持续投入清单内。", "search")
+            ]),
+            dimension("position", "JD 通常明确并强调结果导向。", "medium", []),
+        ],
+    },
+    "腾讯": {
+        "aliases": ["腾讯控股有限公司", "Tencent", "tencent"],
+        "creditCode": None,
+        "caseType": "low_risk",
+        "positionInfo": {"title": "后端开发工程师", "salary": "28-45K", "stage": "已上市(HKEX)", "scale": "10000人以上"},
+        "dimensions": [
+            dimension("scale", "规模庞大且社保参保充分可验证。", "high", []),
+            dimension("capital", "港股主板长期上市公司，现金流稳健。", "high", []),
+            dimension("legal", "未发现明显法律合规风险。", "high", []),
+            dimension("online", "不同 BG 体感差异较大，游戏 BG 强度偏高。", "medium", [
+                signal("bg_variance", "BG 体感差异明显",
+                       "在职与离职反馈普遍指出各事业群在加班强度、考核机制和文化氛围上差异较大；游戏 BG 反馈中『项目制压力大』较为集中。",
+                       "网页检索(样例摘要)", "medium", 1,
+                       "BG 差异大；游戏项目制压力；其他 BG 相对稳定",
+                       "体感差异意味着同公司内部体验高度依赖所分配的团队。",
+                       "建议明确告知 HR 目标 BG 与项目组，并在 offer 中固化归属关系。", "search")
+            ]),
+            dimension("position", "职责划分规范。", "medium", []),
+        ],
+    },
+    "拼多多": {
+        "aliases": ["PDD Holdings", "上海寻梦信息技术有限公司", "Pinduoduo"],
+        "creditCode": None,
+        "caseType": "high_combo",
+        "positionInfo": {"title": "服务端开发工程师", "salary": "40-70K", "stage": "已上市(NASDAQ)", "scale": "1000人以上"},
+        "dimensions": [
+            dimension("scale", "市值进入前列，人员规模持续扩张。", "high", []),
+            dimension("capital", "2018 年美股上市，近年财报显示强劲盈利能力。", "high", []),
+            dimension("legal", "曾因工时安排引起社会关注的合规讨论。", "medium", [
+                signal("working_hours_attention", "工时相关社会关注",
+                       "公开招聘口碑渠道多次提及工作时长相关的社会关注事件，监管部门亦有过约谈类报道。",
+                       "网页检索(样例摘要)", "medium", 1,
+                       "存在过工时合规相关社会关注",
+                       "此类历史信号提示需重点核验当前实际排班制度是否符合自身承受能力。",
+                       "建议直接询问每日下班时间常态、周末调休规则与节假日安排。", "search")
+            ]),
+            dimension("online", "高强度与严管理的负面信号最为集中的一家。", "high", [
+                signal("extreme_overtime", "极端加班标签高频出现",
+                       "公开反馈大量集中出现『每月仅一次单休』『常态晚于 22 点下班』『强制末位淘汰』『午休时间极短』等强烈强度信号。",
+                       "网页检索(样例摘要)", "high", 3,
+                       "每月一休；22 点后下班常见；末位淘汰",
+                       "强度信号密度远高于行业平均，属于求职决策前必须直面的核心变量。",
+                       "若接受 offer 应同步评估健康成本、家庭协调方案和中短期退出计划。", "search"),
+                signal("strict_management", "强势管理与严苛绩效反复被提及",
+                       "匿名评价中频繁出现『管理风格非常强势』『罚款式扣罚』『绩效考核严苛不留情面』等关键词。",
+                       "匿名反馈(样例数据)", "medium", 2,
+                       "管理强势；绩效严苛；罚款机制",
+                       "高压管理模式可能放大心理负担，需评估个人适配度而非单纯薪资吸引力。",
+                       "建议面试时观察面试官风格并向在职员工侧面了解真实日常。")
+            ]),
+            dimension("position", "JD 明确但隐含高压预期。", "medium", [
+                signal("implicit_pressure_jd", "JD 中隐含高压暗示",
+                       "部分 JD 使用『极致投入』『快速迭代到极限』『结果导向无上限』等表述，需识别其中隐含的工作量预期。",
+                       "招聘页信息(样例数据)", "medium", 1,
+                       "JD 含极致投入表述",
+                       "措辞本身不构成风险，但是对实际强度的间接佐证。",
+                       "建议将 JD 措辞作为面谈切入点逐句澄清量化标准。")
+            ]),
         ],
     },
     "BB文化": {
@@ -134,41 +182,70 @@ SAMPLE_COMPANIES: dict[str, dict[str, Any]] = {
             dimension("position", "岗位职责较清楚。", "medium", []),
         ],
     },
-    "CC传媒": {
-        "aliases": ["CC传媒有限公司"],
-        "creditCode": "91110000CC20260006",
-        "caseType": "high_combo",
-        "positionInfo": {"title": "短视频运营", "salary": "15-25K", "stage": "天使轮", "scale": "100-499人"},
+    "阿里": {
+        "aliases": ["阿里巴巴集团控股有限公司", "Alibaba Group", "阿里巴巴"],
+        "creditCode": None,
+        "caseType": "organization_instability",
+        "positionInfo": {"title": "Java 开发工程师(P6)", "salary": "30-55K", "stage": "已上市(NYSE/HKEX)", "scale": "10000人以上"},
         "dimensions": [
-            dimension("scale", "招聘规模与公开参保人数差异明显。", "high", [
-                signal("scale_gap", "规模真实性存疑", "招聘页显示 100-499 人，公开参保人数为 8 人。", "企业公开信息（样例数据）", "high", 3, "招聘规模 100-499；参保人数 8", "规模差异明显，需确认团队真实性。", "建议确认团队人数、业务线人数和岗位 HC 来源。")
+            dimension("scale", "大体量集团主体，人员规模信息完整。", "high", []),
+            dimension("capital", "多地上市成熟企业，资本结构透明。", "high", []),
+            dimension("legal", "存在若干劳动仲裁公开案件，处于常规水平区间。", "medium", [
+                signal("labor_disputes_normal_scale", "大体量下常规水平案件",
+                       "公开司法文书中可见一定数量的劳动争议案件，绝对数量不低但在同等员工基数的企业间属正常分布。",
+                       "企业公开信息(样例数据)", "medium", 1,
+                       "劳动争议数量级正常",
+                       "数字本身不应单独定性为高风险，宜与其他维度交叉观察。",
+                       "建议重点关注 P 级对应的转正条件与离职竞业协议范围。")
             ]),
-            dimension("capital", "成立时间短且实缴资本为 0。", "high", [
-                signal("new_company", "成立时间较短", "公司成立不足 1 年，组织稳定性仍需观察。", "企业公开信息（样例数据）", "high", 2, "成立 8 个月", "新成立公司并非必然有问题，但不确定性更高。", "建议确认融资、现金流和团队规划。"),
-                signal("zero_paid_capital", "实缴资本较低", "注册资本 1000 万，实缴资本显示为 0。", "企业公开信息（样例数据）", "high", 2, "注册资本 1000 万；实缴 0", "实缴较低可能意味着资金到位情况需进一步核验。", "建议询问薪资发放稳定性和业务收入来源。")
+            dimension("online", "分拆重组期不确定性成为近期主旋律。", "medium", [
+                signal("restructure_discussion", "重组进展讨论热度高",
+                       "自 1+6+N 分拆启动以来，公开渠道反复出现『独立融资进度不明朗』『BU 边界仍在磨合』『中台拆解影响协同效率』等讨论。",
+                       "网页检索(样例摘要)", "medium", 2,
+                       "1+6+N 进行中；BU 边界磨合；独立融资待定",
+                       "过渡期内的新员工可能面临汇报线和资源池变动。",
+                       "建议确认拟加入实体法人主体、汇报路径稳定性及未来半年预算冻结状态。", "search"),
+                signal("performance_pressure", "361 考核体系压力反复出现",
+                       "匿名社区中长期活跃关于『361 末位强制分布』『向上汇报链路长』『年中述职消耗精力』的话题。",
+                       "匿名反馈(样例数据)", "medium", 1,
+                       "361 末位；汇报链路长；述职压力大",
+                       "成熟的硬性考核并非缺陷，但对适应扁平文化的候选人构成额外挑战。",
+                       "建议提前了解 P 序列对应 KPI 结构与最近两次校准的实际分布。")
             ]),
-            dimension("legal", "暂未发现法律纠纷。", "medium", []),
-            dimension("online", "官网与搜索结果较少。", "medium", [
-                signal("limited_presence", "公开透明度不足", "官网内容较少，公开网络足迹有限。", "网页检索（样例摘要）", "medium", 1, "官网内容少；搜索结果少", "公开信息少会降低判断置信度。", "建议要求对方清楚说明业务模式和客户来源。", "search")
-            ]),
-            dimension("position", "岗位薪资偏高且职责偏泛。", "medium", [
-                signal("vague_jd", "JD 描述较模糊", "岗位职责以“参与增长”“打造爆款”为主，缺少明确产出和汇报关系。", "招聘页信息（样例数据）", "medium", 1, "职责描述泛化", "职责模糊会增加入职后预期偏差。", "建议确认具体工作内容、考核指标和汇报对象。")
-            ]),
+            dimension("position", "P 级定义清晰。", "medium", []),
         ],
     },
-    "DD咨询": {
-        "aliases": ["DD管理咨询"],
-        "creditCode": "91110000DD20260007",
-        "caseType": "position_risk",
-        "positionInfo": {"title": "战略分析师", "salary": "30-45K", "stage": "稳定经营", "scale": "100-499人"},
+    "美团": {
+        "aliases": ["北京三快科技有限公司", "Meituan", "美团点评"],
+        "creditCode": None,
+        "caseType": "organization_instability",
+        "positionInfo": {"title": "后端工程师", "salary": "25-42K", "stage": "已上市(HKEX)", "scale": "10000人以上"},
         "dimensions": [
-            dimension("scale", "公司规模信息正常。", "high", []),
-            dimension("capital", "经营基础较稳定。", "high", []),
-            dimension("legal", "未发现明显合规风险。", "high", []),
-            dimension("online", "公开反馈正常。", "medium", []),
-            dimension("position", "岗位本身存在异常信号。", "medium", [
-                signal("long_posting", "岗位长期挂出", "同岗位连续发布超过 6 个月，建议确认是否真实在招。", "招聘页信息（样例数据）", "medium", 2, "连续挂出 7 个月", "长期挂岗可能来自持续扩招，也可能是候选人筛选或虚位。", "建议确认岗位 HC 是新增还是替补、入职时间和历史流失情况。"),
-                signal("high_salary", "薪资显著偏高", "该岗位薪资高于同类岗位均值约 45%。", "招聘页信息（样例数据）", "medium", 2, "30-45K；行业均值约 18-28K", "高薪可能包含绩效或高强度要求，需要核验结构。", "建议确认薪资结构、绩效占比和试用期薪资比例。")
+            dimension("scale", "外卖/本地生活龙头规模庞大，但近一年经历多轮业务收缩调整。", "high", []),
+            dimension("capital", "港股上市并实现规模化盈利，资本结构稳健。", "high", []),
+            dimension("legal", "随组织优化推进，劳动争议相关记录数量较上一周期有所增长。", "medium", [
+                signal("labor_disputes_increase", "劳动仲裁数量同比上升",
+                       "公开裁判文书库中该公司涉劳动争议案件数量较前一周期出现可见增长，主要集中在经济补偿金与违法解除劳动合同两类案由。",
+                       "企业公开信息(样例数据)", "medium", 2,
+                       "案件数量同比增长",
+                       "案件量的变化往往滞后反映实际用工动作，可作为辅助观察指标。",
+                       "建议面试前查阅拟入职城市最新的裁判文书了解趋势走向。")
+            ]),
+            dimension("online", "大规模组织优化的舆情显著升温，超出往常周期性盘整水平。", "medium", [
+                signal("major_layoff_discussion", "大规模组织优化舆情密集",
+                       "2025 年以来围绕『社区团购事业部大幅缩减』『到店事业群合并编制』『无人配送团队关停』『部分区域骑手运力转外包』等话题在匿名社区高频出现，并被多家财经媒体跟进报道，讨论热度与覆盖业务线条数均高于过往季度性盘整。",
+                       "网页检索(样例摘要)", "high", 3,
+                       "多条业务线同步盘点；媒体广泛跟踪跟进",
+                       "本轮调整覆盖面广于常规盘整，对新员工的中短期稳定性预期构成实质影响。",
+                       "建议确认拟入岗位所属 BU 是否在本轮受影响清单内，以及是否存在 HC 冻结窗口期。", "search")
+            ]),
+            dimension("position", "HC 审批趋于严格，部分岗位放出速度放缓。", "medium", [
+                signal("hc_freeze_signal", "HC 收紧迹象显现",
+                       "招聘平台数据显示多个技术岗位连续挂出周期延长、补岗速度放缓，疑似与新业务缩编后的总量管控有关；个别候选人反馈 offer 发放后被推迟入职日期。",
+                       "招聘页信息(样例数据)", "low", 1,
+                       "岗位更新频率下降；个别 offer 推迟入职",
+                       "HC 收紧并不等同于全面停招，但对个人的入职时点与部门选择提出了更高敏感度。",
+                       "建议确认 offer 发放的主体法人与是否绑定特定项目预算。")
             ]),
         ],
     },
@@ -226,6 +303,37 @@ SAMPLE_COMPANIES: dict[str, dict[str, Any]] = {
 }
 
 FEEDBACK: dict[str, list[dict[str, Any]]] = {
+    "百度": [
+        {"type": "current_employee", "title": "在职员工", "tags": ["薪资稳定", "流程规范", "晋升偏慢"], "summary": "发薪准时、福利齐全，但晋升通道较长，边缘业务线偶有调整。", "count": 42},
+        {"type": "former_employee", "title": "已离职员工", "tags": ["体系成熟", "内部政治一般", "成长放缓"], "summary": "适合作为长期平台，但部分老业务增长乏力，个人空间受限。", "count": 33},
+        {"type": "interviewee", "title": "面试过的人", "tags": ["流程正规", "反馈及时", "问题基础"], "summary": "校招与社招均规范，技术面以算法和系统设计为主。", "count": 28},
+    ],
+    "字节跳动": [
+        {"type": "current_employee", "title": "在职员工", "tags": ["薪资有竞争力", "OKR 节奏快", "弹性工作"], "summary": "薪酬包亮眼且期权流动性较好；强度高但目标清晰。", "count": 55},
+        {"type": "former_employee", "title": "已离职员工", "tags": ["成长极快", "强度高", "业务变动"], "summary": "高密度训练场但身心消耗明显，建议规划好退出节奏。", "count": 48},
+        {"type": "interviewee", "title": "面试过的人", "tags": ["题目硬核", "流程紧凑", "多轮交叉面"], "summary": "对算法与项目深度要求较高，HR 反馈通常较快。", "count": 40},
+    ],
+    "腾讯": [
+        {"type": "current_employee", "title": "在职员工", "tags": ["氛围相对宽松", "福利好", "BG 差异大"], "summary": "整体待遇与文化在头部中靠前，体验取决于所在事业群。", "count": 50},
+        {"type": "former_employee", "title": "已离职员工", "tags": ["节奏可控", "游戏线压力大", "转岗机制存在"], "summary": "多数人评价正面，但游戏及 To C 业务加班较多。", "count": 38},
+        {"type": "interviewee", "title": "面试过的人", "tags": ["流程规范", "HR 专业", "周期适中"], "summary": "笔试到 offer 通常一个月内完成，沟通顺畅。", "count": 35},
+    ],
+    "拼多多": [
+        {"type": "current_employee", "title": "在职员工", "tags": ["薪资极高", "工作强度极大", "单休为主"], "summary": "收入领先行业但要付出几乎全部时间精力，性价比因人而异。", "count": 36},
+        {"type": "former_employee", "title": "已离职员工", "tags": ["现金回报可观", "身心透支", "文化强势"], "summary": "短期赚钱效率高的选择之一，长期可持续性需自行评估。", "count": 44},
+        {"type": "interviewee", "title": "面试过的人", "tags": ["轮次精简", "决策迅速", "实用导向"], "summary": "面试务实高效，但需提前确认能否接受作息安排再投递。", "count": 25},
+    ],
+    "阿里": [
+        {"type": "current_employee", "title": "在职员工", "tags": ["P 序列成熟", "中台资源多", "重组过渡期"], "summary": "技术与工程底蕴深厚，分拆后 BU 边界仍在磨合。", "count": 47},
+        {"type": "former_employee", "title": "已离职员工", "tags": ["考核严格(361)", "向上汇报成本高", "业务波动增加"], "summary": "管理体系高度结构化，适应与否差异显著。", "count": 39},
+        {"type": "interviewee", "title": "面试过的人", "tags": ["HRG 全程参与", "P 级评定明确", "述职氛围浓"], "summary": "晋升答辩文化浓厚，新人需要时间熟悉述职范式。", "count": 31},
+    ],
+    "美团": [
+        {"type": "current_employee", "title": "在职员工", "tags": ["主业底盘尚稳", "BU 合并频繁", "HC 审批收紧"], "summary": "核心本地商业基本盘稳定，但多个新业务事业部处于盘整合并状态，内部转岗窗口收窄。", "count": 38},
+        {"type": "former_employee", "title": "已离职员工", "tags": ["N+1 相对规范", "项目被砍被动离开", "转岗机会有限"], "summary": "多数人评价离职补偿兑现较为规范，但所在项目一旦进入缩减名单个人腾挪空间不大。", "count": 32},
+        {"type": "interviewee", "title": "面试过的人", "tags": ["部分岗位暂停放号", "流程偶有中断", "决策周期延长"], "summary": "受影响 BU 存在 offer 进程延迟乃至撤销情形，投递前最好确认 HC 是否已锁定。", "count": 24},
+    ],
+
     "BB文化": [
         {"type": "current_employee", "title": "在职员工", "tags": ["薪资准时", "加班偏多", "团队氛围尚可"], "summary": "多数反馈认为发薪稳定，但工作节奏较快。", "count": 6},
         {"type": "former_employee", "title": "已离职员工", "tags": ["成长快", "管理强势", "晋升一般"], "summary": "适合作为过渡和积累经验的平台，但管理风格两极化。", "count": 4},
@@ -245,12 +353,12 @@ DEFAULT_FEEDBACK = [
 ]
 
 COMPANY_SHORTCUTS = [
-    {"name": "XX科技", "type": "low_risk", "description": "低风险样例"},
-    {"name": "YY网络", "type": "scale_inflated", "description": "规模真实性风险"},
-    {"name": "ZZ智能", "type": "legal_risk", "description": "劳动争议较多"},
-    {"name": "AA教育", "type": "insufficient", "description": "数据不足兜底"},
-    {"name": "CC传媒", "type": "high_combo", "description": "高风险组合"},
-    {"name": "DD咨询", "type": "position_risk", "description": "岗位风险突出"},
+    {"name": "百度", "type": "low_risk", "description": "低风险·成熟大盘"},
+    {"name": "字节跳动", "type": "organization_instability", "description": "节奏快·业务收缩关注"},
+    {"name": "腾讯", "type": "low_risk", "description": "低风险·BG 差异注意"},
+    {"name": "拼多多", "type": "high_combo", "description": "高风险·高强度组合"},
+    {"name": "阿里", "type": "organization_instability", "description": "分拆期·考核激进"},
+    {"name": "美团", "type": "organization_instability", "description": "组织大幅盘整·关注影响面"},
 ]
 
 

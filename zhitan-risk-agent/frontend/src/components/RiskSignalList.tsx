@@ -18,15 +18,15 @@ const icons: Record<string, string> = {
 };
 
 function scoreColor(score: number): string {
-  if (score <= 3.0) return '#e86a5a';
+  if (score <= 3.0) return '#4caf82';
   if (score <= 7.0) return '#e6a817';
-  return '#4caf82';
+  return '#e86a5a';
 }
 
 function statusText(score: number): string {
-  if (score <= 3.0) return '× 高风险';
+  if (score <= 3.0) return '✓ 无异常';
   if (score <= 7.0) return '⚠ 需关注';
-  return '✓ 无异常';
+  return '× 高风险';
 }
 
 export default function RiskSignalList({ dimensions }: { dimensions: RiskDimension[] }) {
@@ -94,7 +94,7 @@ export default function RiskSignalList({ dimensions }: { dimensions: RiskDimensi
               </div>
               <div style={{ textAlign: 'right', flexShrink: 0 }}>
                 <div style={{ fontSize: '18px', fontWeight: 700, color, fontFamily: '"Microsoft YaHei","PingFang SC",sans-serif', WebkitTextFillColor: color }}>{dimension.riskScore.toFixed(1)} 分</div>
-                <div style={{ fontSize: '12px', color, marginTop: '2px', WebkitTextFillColor: color }}>{statusText(dimension.riskScore)}</div>
+                <div style={{ fontSize: '14px', color, marginTop: '2px', WebkitTextFillColor: color }}>{statusText(dimension.riskScore)}</div>
               </div>
             </div>
           </div>

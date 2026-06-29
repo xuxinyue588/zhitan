@@ -67,7 +67,7 @@ export default function RiskCard({ report }: { report: RiskReport }) {
             <strong style={{ fontSize: '44px', fontWeight: 800, color: textColor, lineHeight: 1 }}>{card.scoreText}</strong>
             <span style={{ fontSize: '12px', color: subColor, marginTop: '4px' }}>风险评分</span>
           </div>
-          <span style={{
+          {theme !== 'blue' && <span style={{
             background: badgeColor,
             color: '#fff',
             borderRadius: '999px',
@@ -75,7 +75,7 @@ export default function RiskCard({ report }: { report: RiskReport }) {
             fontSize: '14px',
             fontWeight: 700,
             whiteSpace: 'nowrap',
-          }}>✓ {card.levelText}</span>
+          }}>✓ {card.levelText}</span>}
         </div>
       </div>
       {card.summary && (

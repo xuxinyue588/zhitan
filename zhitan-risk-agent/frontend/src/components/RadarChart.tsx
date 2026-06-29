@@ -52,27 +52,30 @@ export default function RadarChart({ items }: { items: Array<{ label: string; va
   const polygon = points.map((point) => `${point.x},${point.y}`).join(' ');
 
   return (
-    <section className="panel radar-panel">
-      <h2>岗位风险雷达</h2>
-      <svg viewBox={`0 0 ${size} ${size}`} className="radar">
-        {[0.25, 0.5, 0.75, 1].map((scale) => (
-          <polygon key={scale} points={data.map((_, index) => {
-            const angle = -Math.PI / 2 + (Math.PI * 2 * index) / data.length;
-            return `${center + Math.cos(angle) * radius * scale},${center + Math.sin(angle) * radius * scale}`;
-          }).join(' ')} className="radar-grid" />
-        ))}
-        {points.map((point) => <line key={point.label} x1={center} y1={center} x2={point.ax} y2={point.ay} className="radar-axis" />)}
-        <polygon points={polygon} className="radar-area" />
-        {points.map((point) => {
-          const emoji = LABEL_EMOJI[point.label] ?? '';
-          return (
-            <text key={point.label} textAnchor="middle" fill={labelColor(point.value)}>
-              {emoji && <tspan x={point.lx} y={point.ly - 9} fontSize="13">{emoji}</tspan>}
-              <tspan x={point.lx} y={point.ly + (emoji ? 9 : 0)} fontSize="13">{point.label}</tspan>
-            </text>
-          );
-        })}
-      </svg>
+    <section className="panel radar-panel" style={{ position: 'relative' }}>
+      <h2 style={{ borderBottom: '1px solid #f0f1f3', paddingBottom: '8px', marginBottom: '8px', marginTop: '8px' }}>岗位风险雷达</h2>
+      <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
+        <svg viewBox={`0 0 ${size} ${size}`} className="radar">
+          {[0.25, 0.5, 0.75, 1].map((scale) => (
+            <polygon key={scale} points={data.map((_, index) => {
+              const angle = -Math.PI / 2 + (Math.PI * 2 * index) / data.length;
+              return `${center + Math.cos(angle) * radius * scale},${center + Math.sin(angle) * radius * scale}`;
+            }).join(' ')} className="radar-grid" />
+          ))}
+          {points.map((point) => <line key={point.label} x1={center} y1={center} x2={point.ax} y2={point.ay} className="radar-axis" />)}
+          <polygon points={polygon} className="radar-area" />
+          {points.map((point) => {
+            const emoji = LABEL_EMOJI[point.label] ?? '';
+            return (
+              <text key={point.label} textAnchor="middle" fill={labelColor(point.value)}>
+                {emoji && <tspan x={point.lx} y={point.ly - 9} fontSize="13">{emoji}</tspan>}
+                <tspan x={point.lx} y={point.ly + (emoji ? 9 : 0)} fontSize="13">{point.label}</tspan>
+              </text>
+            );
+          })}
+        </svg>
+        <img src="/bear-think.gif" alt="" style={{ position: 'absolute', bottom: 0, right: 0, width: '96px', height: 'auto', pointerEvents: 'none' }} />
+      </div>
     </section>
   );
 }
